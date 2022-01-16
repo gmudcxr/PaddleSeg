@@ -3,6 +3,10 @@ import os
 import numpy
 import numpy as np
 
+import sys
+
+sys.path.append(os.path.dirname(__file__))
+
 from infer import Predictor
 
 cur_dir = os.path.dirname(os.path.abspath(__file__))
@@ -88,10 +92,10 @@ class HoloProcess(object):
                 # clip image
                 clip_image = source_image[y: y + h, x: x + w]
 
-                yield clip_image
+                yield clip_image, x, y, w, h
 
     def run(self, filename):
-        for clip in self.clip(filename):
+        for clip, _, _, _, _ in self.clip(filename):
             cv2.imshow('clip', clip)
             cv2.waitKey(0)
 
