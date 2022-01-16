@@ -33,8 +33,8 @@ from paddleseg.utils.visualize import get_pseudo_color_map
 
 def use_auto_tune(args):
     return hasattr(PredictConfig, "collect_shape_range_info") \
-        and hasattr(PredictConfig, "enable_tuned_tensorrt_dynamic_shape") \
-        and args.device == "gpu" and args.use_trt and args.enable_auto_tune
+           and hasattr(PredictConfig, "enable_tuned_tensorrt_dynamic_shape") \
+           and args.device == "gpu" and args.use_trt and args.enable_auto_tune
 
 
 class DeployConfig:
@@ -199,7 +199,7 @@ class Predictor:
                 use_calib_mode=False)
 
             if use_auto_tune(self.args) and \
-                os.path.exists(self.args.auto_tuned_shape_file):
+                    os.path.exists(self.args.auto_tuned_shape_file):
                 logger.info("Use auto tuned dynamic shape")
                 allow_build_at_runtime = True
                 self.pred_cfg.enable_tuned_tensorrt_dynamic_shape(
@@ -251,6 +251,29 @@ class Predictor:
             self._save_imgs(results, imgs)
 
         logger.info("Finish")
+
+    def run_single(self, img):
+        input_names = self.predictor.get_input_names()
+        input_handle = self.predictor.get_input_handle(input_names[0])
+        output_names = self.predictor.get_output_names()
+        output_handle = self.predictor.get_output_handle(output_names[0])
+        results = []
+        data = np.array([self._preprocess(img)])
+
+        input_handle.reshape(data.shape)
+        input_handle.copy_from_cpu(data)
+        self.predictor.run()
+
+        results = output_handle.copy_to_cpu()
+
+        results = self._postprocess(results)
+
+        logger.info("Finish")
+
+        if len(results):
+            return results[0]
+
+        return None
 
     def _preprocess(self, img):
         return self.cfg.transforms(img)[0]
