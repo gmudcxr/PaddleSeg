@@ -253,6 +253,7 @@ class Predictor:
         logger.info("Finish")
 
     def run_single(self, img):
+        logger.info("Start")
         input_names = self.predictor.get_input_names()
         input_handle = self.predictor.get_input_handle(input_names[0])
         output_names = self.predictor.get_output_names()
