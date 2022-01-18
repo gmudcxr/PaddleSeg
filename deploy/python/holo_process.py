@@ -88,6 +88,8 @@ class HoloProcess(object):
 
                 # cv2.drawContours(image, [c], 0, (0, 0, 0), 2)
                 source_image = cv2.imread(source_filename)
+                # for object detection, should run cv2.cvtColor(img, cv2.COLOR_BGR2RGB) first
+                source_image = cv2.cvtColor(source_image, cv2.COLOR_BGR2RGB)
 
                 # clip image
                 clip_image = source_image[y: y + h, x: x + w]
