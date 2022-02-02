@@ -8,6 +8,7 @@ import sys
 sys.path.append(os.path.dirname(__file__))
 
 from infer import Predictor
+from infer import get_pseudo_color_map
 
 cur_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -62,12 +63,17 @@ class HoloProcess(object):
         """
         return self.predictor.run_single(source_filename)
 
-    def clip(self, source_filename):
+    def clip(self, source_filename, write_seg_result_to=None):
         # image = cv2.imread(seg_filename)
         # gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         seg_result = self.predict(source_filename)
         values = numpy.unique(seg_result)
         height, width = seg_result.shape[:2]
+
+        # write seg result to image
+        if write_seg_result_to:
+            pseudo_color_img = get_pseudo_color_map(seg_result)
+            pseudo_color_img.save(write_seg_result_to)
 
         for value in values:
             lower = np.array([value], dtype='uint8')
