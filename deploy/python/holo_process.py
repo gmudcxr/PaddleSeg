@@ -97,6 +97,6 @@ class HoloProcess(object):
 
 
 if __name__ == '__main__':
-    source_filename = 'D:/IMG_20211221_203903.jpg'
+    source_filename = r"D:\Study\Github\HoloAACServer\HoloAAC\images\91662998-77fb-11ec-8ff1-70a6ccf419d3.png"
     hp = HoloProcess()
     hp.run(source_filename)
