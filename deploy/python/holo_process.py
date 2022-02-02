@@ -3,6 +3,10 @@ import os
 import numpy
 import numpy as np
 
+import sys
+
+sys.path.append(os.path.dirname(__file__))
+
 from infer import Predictor
 
 cur_dir = os.path.dirname(os.path.abspath(__file__))
@@ -84,14 +88,16 @@ class HoloProcess(object):
 
                 # cv2.drawContours(image, [c], 0, (0, 0, 0), 2)
                 source_image = cv2.imread(source_filename)
+                # for object detection, should run cv2.cvtColor(img, cv2.COLOR_BGR2RGB) first
+                source_image = cv2.cvtColor(source_image, cv2.COLOR_BGR2RGB)
 
                 # clip image
                 clip_image = source_image[y: y + h, x: x + w]
 
-                yield clip_image
+                yield clip_image, x, y, w, h
 
     def run(self, filename):
-        for clip in self.clip(filename):
+        for clip, _, _, _, _ in self.clip(filename):
             cv2.imshow('clip', clip)
             cv2.waitKey(0)
 
