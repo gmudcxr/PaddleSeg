@@ -1,0 +1,15 @@
+conda install paddlepaddle-gpu==2.2.1 cudatoolkit=11.2 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/Paddle/ -c conda-forge
+
+python export.py --config configs/deeplabv3p/deeplabv3p_resnet101_os8_voc12aug_512x512_40k.yml --model_path deeplabv3p_resnet101_os8_voc12aug_512x512_40k/model.pdparams --save_dir output
+
+python deploy/python/infer.py --config output/deploy.yaml --image_path "D:\IMG_20211221_203903.jpg"
+
+
+
+python export.py --config configs/bisenet/bisenet_cityscapes_1024x1024_160k.yml --model_path bisenet_cityscapes_1024x1024_160k/model.pdparams --save_dir output
+
+python train.py --config configs/bisenet/bisenet_voc12aug_512x512_160k.yml --do-eval --save_iterval 500 --save_dir output
+
+
+
+python export.py --config configs/bisenet/bisenet_voc12aug_512x512_160k.yml --model_path bisenet_voc12aug_512x512_160k/model.pdparams --save_dir output
