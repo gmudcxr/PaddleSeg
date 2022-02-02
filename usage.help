@@ -13,3 +13,10 @@ python train.py --config configs/bisenet/bisenet_voc12aug_512x512_160k.yml --do-
 
 
 python export.py --config configs/bisenet/bisenet_voc12aug_512x512_160k.yml --model_path bisenet_voc12aug_512x512_160k/model.pdparams --save_dir output
+
+
+# pspnet
+set CUDA_VISIBLE_DEVICES=0
+python export.py --config configs/pspnet/pspnet_resnet101_os8_voc12aug_512x512_40k.yml --model_path pspnet_resnet101_os8_voc12aug_512x512_40k/model.pdparams --save_dir output
+
+python deploy/python/infer.py --config output/deploy.yaml --image_path "D:\IMG_20211221_203903.jpg"
