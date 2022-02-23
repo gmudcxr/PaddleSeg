@@ -18,10 +18,12 @@ class HoloProcess(object):
     def __init__(self):
         self.deploy_yml = os.path.join(cur_dir, '../../output/deploy.yaml')
         self.predictor = None
-        self.device = 'gpu'
+        self.device = 'cpu'
         self.precision = 'int8'
         self.use_trt = False
         self.with_argmax = False
+        self.enable_mkldnn = True
+        self.cpu_threads = 16
         # init predictor
         self.init_predictor()
 
@@ -51,6 +53,14 @@ class HoloProcess(object):
             @property
             def with_argmax(cself):
                 return self.with_argmax
+
+            @property
+            def enable_mkldnn(cself):
+                return self.enable_mkldnn
+
+            @property
+            def cpu_threads(cself):
+                return self.cpu_threads
 
         config = Config()
         self.predictor = Predictor(config)
