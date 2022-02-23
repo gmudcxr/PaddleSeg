@@ -54,6 +54,8 @@ class HoloProcess(object):
 
         config = Config()
         self.predictor = Predictor(config)
+        # warmup
+        self.warmup()
 
     def predict(self, source_filename):
         """
@@ -106,6 +108,10 @@ class HoloProcess(object):
         for clip, _, _, _, _ in self.clip(filename):
             cv2.imshow('clip', clip)
             cv2.waitKey(0)
+
+    def warmup(self):
+        image = np.zeros([512, 512, 3], dtype='uint8')
+        self.predictor.run_single(image)
 
 
 if __name__ == '__main__':
