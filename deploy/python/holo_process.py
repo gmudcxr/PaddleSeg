@@ -18,7 +18,7 @@ class HoloProcess(object):
     def __init__(self):
         self.deploy_yml = os.path.join(cur_dir, '../../output/deploy.yaml')
         self.predictor = None
-        self.device = 'cpu'
+        self.device = 'gpu'
         self.precision = 'int8'
         self.use_trt = False
         self.with_argmax = False
